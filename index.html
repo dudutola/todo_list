@@ -18,11 +18,9 @@
       [ ]. 🟩️no spaces
       [ ]. 🟧️no repeated values
   [ ]. delete task
-      [ ]. remove from the DOM
-      [ ]. remove from the database
+      [ ]. 🟩️remove from the DOM
+      [ ]. 🟩️remove from the database
   [ ]. mark task as done
-
-
  -->
   <h1>Todo List</h1>
   <form action="">
@@ -43,37 +41,6 @@
       document.getElementById("tasks").appendChild(itemElement);
     })
 
-
-    // we have list of items and we want to do something to every item
-    document.querySelectorAll('img').forEach(element => {
-      element.alt =  'blank';
-    });
-
-
-    //  we want to insert something into the DOM
-    // create element if it doesn't exist and insert item
-    document.createElement('div').innerHTML = 'blabla'
-    // select element if it exists and insert item
-    document.getElementById('tasks').innerHTML = 'blabla'
-
-    // simple string
-    .innerText
-    .append
-
-    // more complicate html
-    .innerHTML
-    .insertAjdacentHTML
-
-    // for html nodes only
-    .appendChild
-
-
-    // for one item
-    // const liElement = document.createElement("li");
-    // liElement.innerHTML = tasks[0];
-    // console.log(liElement)
-    // document.getElementById("tasks").appendChild(liElement);
-    // select form
     const form = document.querySelector("form");
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -81,27 +48,21 @@
       // select input text
       const taskInput = document.getElementById("task-input").value;
       // verifier si input est vide
-      if (taskInput) {
-        console.log("condition")
+      if (taskInput.trim() !== "") {
         const li = document.createElement("li");
         li.innerText = taskInput;
         // recup ul to append a child
         const tasksElement = document.getElementById("tasks");
         tasksElement.appendChild(li);
-        // create an empty list
-        const taskList = [];
         // iteract with li
         document.querySelectorAll("li").forEach((item) => {
-          taskList.push(item.innerHTML);
+          tasks.push(item.innerHTML);
         });
         // add to local storage, update aussi
         localStorage.setItem("tasks", JSON.stringify(taskList));
         // localStorage.setItem("tasks", ["cook", "compras", "lavar roupas"]);
       }
-
     })
   </script>
-
-
 </body>
 </html>
