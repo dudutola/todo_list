@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Todo</title>
+  <script type="module" src="/main.js" defer></script>
 </head>
 <body>
   <!--
@@ -32,72 +33,5 @@
   <ul id="tasks">
     <!-- <li></li> -->
   </ul>
-  <script>
-    // read database, on reçoit un string (JSON.string) du coup faut faire parse pour recup l Array normal
-
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    // let index = 0;
-    let id;
-    if (tasks.length > 0) {
-      id = tasks[(tasks.length-1)].id;
-    } else {
-      id = 0;
-    }
-
-    function insertListItem(task) {
-      // ['run', 'cook', 'clean']
-      // [{id:1, description: 'run'}, {id:2, description: 'cook'}, {id:3, description: 'clean'}]
-      const liContent = document.createElement("div");
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.className = "button-delete";
-      deleteBtn.innerText = "delete";
-
-      const itemElement = document.createElement("li");
-      itemElement.innerHTML = task.description;
-      itemElement.setAttribute('task-id', id);
-      id++;
-
-      liContent.appendChild(itemElement);
-      liContent.appendChild(deleteBtn);
-
-      document.getElementById("tasks").appendChild(liContent);
-      deleteBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        tasks = tasks.filter((task) => task.id != itemElement.getAttribute('task-id'));
-        // add to local storage, update aussi
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-
-        liContent.remove();
-      })
-    }
-
-    // insert tasks into DOM
-    tasks.forEach((task) => {
-      insertListItem(task);
-    })
-
-    const form = document.querySelector("form");
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      console.log(e)
-      // select input text
-      const taskInput = document.getElementById("task-input").value;
-      // verifier si input est vide
-      const task = {id: id, description: taskInput};
-      if (taskInput.trim() !== "") {
-        insertListItem(task);
-        // iteract with li
-        tasks = [];
-        document.querySelectorAll("li").forEach((item) => {
-          tasks.push({id: item.getAttribute('task-id') , description: item.innerHTML});
-        });
-        // add to local storage, update aussi
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-        // localStorage.setItem("tasks", ["cook", "compras", "lavar roupas"]);
-      }
-    })
-  </script>
 </body>
 </html>
