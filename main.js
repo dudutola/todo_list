@@ -73,9 +73,12 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
   console.log(e)
   // select input text
-  const taskInput = document.getElementById("task-input").value;
   // verifier si input est vide
+  const taskInput = document.getElementById("task-input").value;
+  // clear the input
+  document.getElementById("task-input").value = "";
   id++;
+
 
   const task = {id: id, description: taskInput};
   if (taskInput.trim() !== "") {
