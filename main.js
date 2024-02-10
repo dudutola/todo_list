@@ -19,7 +19,6 @@ function insertListItem(task) {
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
 
-
   const deleteBtn = document.createElement("button");
   deleteBtn.className = "button-delete";
   deleteBtn.innerText = "delete";
@@ -78,7 +77,6 @@ form.addEventListener("submit", (e) => {
   // clear the input
   document.getElementById("task-input").value = "";
   id++;
-
 
   const task = {id: id, description: taskInput};
   if (taskInput.trim() !== "") {
