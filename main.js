@@ -16,6 +16,10 @@ function insertListItem(task) {
   liContent.style.display = "flex";
   liContent.style.gap = "10px";
 
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+
+
   const deleteBtn = document.createElement("button");
   deleteBtn.className = "button-delete";
   deleteBtn.innerText = "delete";
@@ -24,8 +28,19 @@ function insertListItem(task) {
   liElement.innerHTML = task.description;
   liElement.setAttribute('task-id', task.id);
 
+  liContent.appendChild(checkbox);
   liContent.appendChild(liElement);
   liContent.appendChild(deleteBtn);
+
+  checkbox.addEventListener("change", (e) => {
+    if (checkbox.checked) {
+      const tasksDone = document.getElementById("tasks-done");
+      tasksDone.appendChild(liContent);
+    } else {
+      const tasksList = document.getElementById("tasks");
+      tasksList.appendChild(liContent);
+    }
+  })
 
   document.getElementById("tasks").appendChild(liContent);
   console.log({liContent});
@@ -39,7 +54,7 @@ function insertListItem(task) {
     // tasks = tasks.filter((task) => task.id != liElement.getAttribute('task-id'));
     tasks = tasks.filter((task) => {
       console.log({task, liElementAssociatedId});
-      return task.id != liElementAssociatedId
+      return task.id != liElementAssociatedId;
     });
     // add to local storage, update aussi
     localStorage.setItem("tasks", JSON.stringify(tasks));
