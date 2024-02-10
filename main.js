@@ -18,6 +18,7 @@ function insertListItem(task) {
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
+  checkbox.checked = task.done;
 
   const deleteBtn = document.createElement("button");
   deleteBtn.className = "button-delete";
@@ -31,7 +32,16 @@ function insertListItem(task) {
   liContent.appendChild(liElement);
   liContent.appendChild(deleteBtn);
 
+  if (checkbox.checked) {
+    const tasksDone = document.getElementById("tasks-done");
+    tasksDone.appendChild(liContent);
+  } else {
+    const tasksList = document.getElementById("tasks");
+    tasksList.appendChild(liContent);
+  }
+
   checkbox.addEventListener("change", (e) => {
+    const clickedTaskId = e.target.nextSibling.getAttribute("task-id");
     if (checkbox.checked) {
       const tasksDone = document.getElementById("tasks-done");
       tasksDone.appendChild(liContent);
@@ -39,9 +49,15 @@ function insertListItem(task) {
       const tasksList = document.getElementById("tasks");
       tasksList.appendChild(liContent);
     }
+    tasks.filter((task) => {
+      if (task.id === clickedTaskId) {
+        task.done = e.target.checked;
+      }
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
   })
 
-  document.getElementById("tasks").appendChild(liContent);
+  // document.getElementById("tasks").appendChild(liContent);
   console.log({liContent});
   deleteBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -70,22 +86,25 @@ tasks.forEach((task) => {
 const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log(e)
   // select input text
   // verifier si input est vide
   const taskInput = document.getElementById("task-input").value;
+  const checkboxChecked = document.querySelector("input[type='checkbox']").checked;
   // clear the input
   document.getElementById("task-input").value = "";
   id++;
 
-  const task = {id: id, description: taskInput};
+
+
+  const task = {id: id, description: taskInput, done: checkboxChecked};
   if (taskInput.trim() !== "") {
     insertListItem(task);
 
     // iteract with li
     tasks = [];
     document.querySelectorAll("li").forEach((item) => {
-      tasks.push({id: item.getAttribute('task-id') , description: item.innerHTML});
+      tasks.push({id: item.getAttribute("task-id"), description: item.innerHTML, done: item.previousSibling.checked});
+      // document.querySelector("li").previousSibling.checked
     });
     // add to local storage, update aussi
     localStorage.setItem("tasks", JSON.stringify(tasks));
