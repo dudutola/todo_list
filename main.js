@@ -1,7 +1,11 @@
 // read database, on reçoit un string (JSON.string) du coup faut faire parse pour recup l Array normal
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-// let index = 0;
+let databaseTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let tasks = databaseTasks.map((task) => {
+  task.id = parseInt(task.id);
+  return task;
+});
+
 let id;
 if (tasks.length > 0) {
   id = parseInt(tasks[(tasks.length-1)].id);
@@ -26,7 +30,7 @@ function insertListItem(task) {
 
   const liElement = document.createElement("li");
   liElement.innerHTML = task.description;
-  liElement.setAttribute('task-id', task.id);
+  liElement.setAttribute("task-id", task.id);
 
   liContent.appendChild(checkbox);
   liContent.appendChild(liElement);
@@ -80,6 +84,7 @@ function insertListItem(task) {
 
 // insert tasks into DOM
 tasks.forEach((task) => {
+
   insertListItem(task);
 })
 
@@ -103,7 +108,7 @@ form.addEventListener("submit", (e) => {
     // iteract with li
     tasks = [];
     document.querySelectorAll("li").forEach((item) => {
-      tasks.push({id: item.getAttribute("task-id"), description: item.innerHTML, done: item.previousSibling.checked});
+      tasks.push({id: parseInt(item.getAttribute("task-id")), description: item.innerHTML, done: item.previousSibling.checked});
       // document.querySelector("li").previousSibling.checked
     });
     // add to local storage, update aussi
