@@ -6,13 +6,6 @@ let tasks = databaseTasks.map((task) => {
   return task;
 });
 
-let id;
-if (tasks.length > 0) {
-  id = parseInt(tasks[(tasks.length-1)].id);
-} else {
-  id = 0;
-}
-
 function insertListItem(task) {
   // ['run', 'cook', 'clean']
   // [{id:1, description: 'run'}, {id:2, description: 'cook'}, {id:3, description: 'clean'}]
@@ -45,7 +38,7 @@ function insertListItem(task) {
   }
 
   checkbox.addEventListener("change", (e) => {
-    const clickedTaskId = e.target.nextSibling.getAttribute("task-id");
+    const clickedTaskId = parseInt(e.target.nextSibling.getAttribute("task-id"));
     if (checkbox.checked) {
       const tasksDone = document.getElementById("tasks-done");
       tasksDone.appendChild(liContent);
@@ -91,17 +84,24 @@ tasks.forEach((task) => {
 const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  // select input text
-  // verifier si input est vide
+  // select input text + verifier si input est vide
   const taskInput = document.getElementById("task-input").value;
-  const checkboxChecked = document.querySelector("input[type='checkbox']").checked;
+  // const checkboxChecked = document.querySelector("input[type='checkbox']").checked;
   // clear the input
   document.getElementById("task-input").value = "";
-  id++;
+  // id++;
+  let id;
+  if (tasks.length > 0) {
+    // tasks[(tasks.length-1)].id > le dernier index de tasks, donc dernier element ajouté
+    // id = parseInt(tasks[(tasks.length-1)].id);
+    let lastIndexDeTasks = (tasks.length - 1);
+    let idOfLastTask = tasks[lastIndexDeTasks].id;
+    id = parseInt(idOfLastTask) + 1;
+  } else {
+    id = 0;
+  }
 
-
-
-  const task = {id: id, description: taskInput, done: checkboxChecked};
+  const task = {id: id, description: taskInput, done: false};
   if (taskInput.trim() !== "") {
     insertListItem(task);
 
@@ -111,6 +111,8 @@ form.addEventListener("submit", (e) => {
       tasks.push({id: parseInt(item.getAttribute("task-id")), description: item.innerHTML, done: item.previousSibling.checked});
       // document.querySelector("li").previousSibling.checked
     });
+    // sort de petit a grand pour pas que les index se melanent et cause pb
+    tasks.sort((a, b) => a.id - b.id);
     // add to local storage, update aussi
     localStorage.setItem("tasks", JSON.stringify(tasks));
     // localStorage.setItem("tasks", ["cook", "compras", "lavar roupas"]);
