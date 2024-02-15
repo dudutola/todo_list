@@ -7,8 +7,7 @@ let tasks = databaseTasks.map((task) => {
 });
 
 function insertListItem(task) {
-  // ['run', 'cook', 'clean']
-  // [{id:1, description: 'run'}, {id:2, description: 'cook'}, {id:3, description: 'clean'}]
+  // ['run', 'cook', 'clean'] --> [{id:1, description: 'run'}, {id:2, description: 'cook'}, {id:3, description: 'clean'}]
   const liContent = document.createElement("div");
   liContent.className = "content-list";
 
@@ -53,6 +52,26 @@ function insertListItem(task) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   })
 
+  // event listener in <li> when clicked to change the text
+  liElement.addEventListener("click", (e) => {
+    liElement.contentEditable = true;
+
+    // si key est cliquée -> contentEditable desactivé, on garde les infos dans la localSto
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        liElement.contentEditable = false;
+
+        const clickedTaskId = parseInt(event.target.getAttribute("task-id"));
+        tasks.filter((task) => {
+          if (task.id === clickedTaskId) {
+            task.description = event.target.innerText;
+          }
+        });
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+    })
+  })
+
   // document.getElementById("tasks").appendChild(liContent);
   console.log({liContent});
   deleteBtn.addEventListener("click", (e) => {
@@ -73,19 +92,16 @@ function insertListItem(task) {
     buttonClicked.parentNode.remove();
   })
 }
-
 // insert tasks into DOM
 tasks.forEach((task) => {
-  task.description = task.description.charAt(0).toUpperCase() + task.description.slice(1);
   insertListItem(task);
 })
-
 
 const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   // select input text + verifier si input est vide
-  const taskInput = document.getElementById("task-input").value;
+  let taskInput = document.getElementById("task-input").value;
   // const checkboxChecked = document.querySelector("input[type='checkbox']").checked;
   // clear the input
   document.getElementById("task-input").value = "";
@@ -101,9 +117,9 @@ form.addEventListener("submit", (e) => {
     id = 0;
   }
 
-  const task = {id: id, description: taskInput, done: false};
   if (taskInput.trim() !== "") {
-    task.toUpperCase();
+    taskInput = taskInput.charAt(0).toUpperCase() + taskInput.slice(1);
+    const task = {id: id, description: taskInput, done: false};
     insertListItem(task);
 
     // iteract with li
@@ -112,7 +128,7 @@ form.addEventListener("submit", (e) => {
       tasks.push({id: parseInt(item.getAttribute("task-id")), description: item.innerHTML, done: item.previousSibling.checked});
       // document.querySelector("li").previousSibling.checked
     });
-    // sort de petit a grand pour pas que les index se melanent et cause pb
+    // sort de petit a grand pour pas que les index se melangent et cause pb
     tasks.sort((a, b) => a.id - b.id);
     // add to local storage, update aussi
     localStorage.setItem("tasks", JSON.stringify(tasks));
