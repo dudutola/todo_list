@@ -10,8 +10,7 @@ function insertListItem(task) {
   // ['run', 'cook', 'clean']
   // [{id:1, description: 'run'}, {id:2, description: 'cook'}, {id:3, description: 'clean'}]
   const liContent = document.createElement("div");
-  liContent.style.display = "flex";
-  liContent.style.gap = "10px";
+  liContent.className = "content-list";
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
