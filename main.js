@@ -76,9 +76,10 @@ function insertListItem(task) {
 
 // insert tasks into DOM
 tasks.forEach((task) => {
-
+  task.description = task.description.charAt(0).toUpperCase() + task.description.slice(1);
   insertListItem(task);
 })
+
 
 const form = document.querySelector("form");
 form.addEventListener("submit", (e) => {
@@ -102,6 +103,7 @@ form.addEventListener("submit", (e) => {
 
   const task = {id: id, description: taskInput, done: false};
   if (taskInput.trim() !== "") {
+    task.toUpperCase();
     insertListItem(task);
 
     // iteract with li

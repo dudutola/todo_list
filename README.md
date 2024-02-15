@@ -2,10 +2,11 @@
 ## Features
 - [ ]. read tasks
   - [x]. read tasks from database and put in the DOM
-  - [ ]. �️ sort tasks alphabeticallay
+  - [ ]. sort tasks alphabetically
+  - [ ]. capitalize the first word
 - [ ]. add task
   - [ ]. add form validation
-    - [ ]. �🟩️no empty input
+    - [ ]. 🟩️no empty input
     - [ ]. 🟩️no spaces
     - [ ]. 🟧️no repeated values
 - [ ]. delete task
