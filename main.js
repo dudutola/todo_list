@@ -55,6 +55,7 @@ function insertListItem(task) {
   // event listener in <li> when clicked to change the text
   liElement.addEventListener("click", (e) => {
     liElement.contentEditable = true;
+    liElement.focus();
 
     // si key est cliquée -> contentEditable desactivé, on garde les infos dans la localSto
     window.addEventListener("keydown", (event) => {
