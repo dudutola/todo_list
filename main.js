@@ -11,18 +11,21 @@ function insertListItem(task) {
   const liContent = document.createElement("div");
   liContent.className = "content-list";
 
-  const checkbox = document.createElement('input');
+  const checkbox = document.createElement("input");
   checkbox.type = 'checkbox';
   checkbox.checked = task.done;
 
   const deleteBtn = document.createElement("button");
   deleteBtn.className = "button-delete";
-  deleteBtn.innerText = "delete";
+
+  const trashIcon = document.createElement("i");
+  trashIcon.className = "fa-solid fa-trash-can";
 
   const liElement = document.createElement("li");
   liElement.innerHTML = task.description;
   liElement.setAttribute("task-id", task.id);
 
+  deleteBtn.appendChild(trashIcon);
   liContent.appendChild(checkbox);
   liContent.appendChild(liElement);
   liContent.appendChild(deleteBtn);
